@@ -13,6 +13,5 @@ Route::controller(ClienteController::class)->group(function () {
     Route::get('/clientes', 'findAll');
     Route::get('/clientes/findById/{id}', 'findById');
     Route::get('/clientes/findByName/{name}', 'findByName');
-    Route::get('/clientes/count', 'count');
-    
+    Route::get('/count/clientes', 'count');
 });

@@ -10,8 +10,7 @@ class ClienteRepository
     public function post($data)
     {
         try {
-            throw new Exception("Error Processing Request", 1);
-            
+           
             $model =  Model::create([
                 "nome" => $data["nome"],
                 "email" => $data["email"],
@@ -105,6 +104,97 @@ class ClienteRepository
             return (object)[
                 'data' => null,
                 'statusCode' => 204
+            ];
+
+        } catch (Exception $exception) {
+            return $this->responseInternalServerError();
+        }
+    }
+
+    public function findAll()
+    {
+        try {
+
+            $model =  Model::all();
+
+            if ($model->isEmpty()) {
+                return (object)[
+                    'data' => [
+                        'error' => [ 'Not found' ]
+                    ],
+                    'statusCode' => 404
+                ];
+            }
+
+            return (object)[
+                'data' => $model,
+                'statusCode' => 200
+            ];
+
+        } catch (Exception $exception) {
+            return $this->responseInternalServerError();
+        }
+    }
+
+    public function findById($id)
+    {
+        try {
+
+            $model =  Model::find($id);
+
+            if (!$model) {
+                return (object)[
+                    'data' => [
+                        'error' => [ 'Not found' ]
+                    ],
+                    'statusCode' => 404
+                ];
+            }
+
+            return (object)[
+                'data' => $model,
+                'statusCode' => 200
+            ];
+
+        } catch (Exception $exception) {
+            return $this->responseInternalServerError();
+        }
+    }
+
+    public function findByName($name)
+    {
+        try {
+
+            $model =  Model::where('nome', 'like', "%$name%")->get();
+
+            if ($model->isEmpty()) {
+                return (object)[
+                    'data' => [
+                        'error' => [ 'Not found' ]
+                    ],
+                    'statusCode' => 404
+                ];
+            }
+
+            return (object)[
+                'data' => $model,
+                'statusCode' => 200
+            ];
+
+        } catch (Exception $exception) {
+            return $this->responseInternalServerError();
+        }
+    }
+
+    public function count()
+    {
+        try {
+
+            return (object)[
+                'data' => [
+                    'count' => Model::all()->count()
+                ],
+                'statusCode' => 200
             ];
 
         } catch (Exception $exception) {
