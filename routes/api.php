@@ -2,7 +2,17 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClienteController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::controller(ClienteController::class)->group(function () {
+    Route::post('/clientes', 'post');
+    Route::get('/clientes/{id}', 'get');
+    Route::patch('/clientes/{id}', 'patch');
+    Route::delete('/clientes/{id}', 'delete');
+    
+    Route::get('/clientes', 'findAll');
+    Route::get('/clientes/findById/{id}', 'findById');
+    Route::get('/clientes/findByName/{name}', 'findByName');
+    Route::get('/clientes/count', 'count');
+    
+});
